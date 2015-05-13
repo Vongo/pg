@@ -24,6 +24,7 @@ people <- list(mael, ad, manon, nastia)
 schedule <- data.frame(matrix(NA,length(unique(ad.days)),(2+length(people.name$name)),dimnames=list(c(), c("Day", "City", people.name$name))), stringsAsFactors=F)
 schedule$Day <- unique(ad$days) # Because of the car <3
 
+aa <- vector()
 schedule$City <- sapply(schedule$Day, function(x) {
 	cities <- unique(ad.cities)
 	day.x.people <- people.name[sapply(people.name$i,function(j) x%in%people[[j]]$days),"name"]
@@ -32,7 +33,10 @@ schedule$City <- sapply(schedule$Day, function(x) {
 	}
 	repeat {
 		ret <- sample(cities,1)
-		if (!(ret %in% schedule$City)) break
+		if (!(ret %in% aa)) {
+			aa <<- c(aa,ret)
+			break
+		}
 	}
 	ret
 })
