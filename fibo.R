@@ -68,6 +68,43 @@ fib6 <- function(x) {
 	b
 }
 
+
+fibM <- (function() {
+    cache <- NULL
+
+    cache_reset <- function() {
+        cache <<- new.env(TRUE, emptyenv())
+        cache_set('0', 0)
+        cache_set('1', 1)
+    }
+
+    cache_set <- function(key, value) {
+        assign(key, value, envir = cache)
+    }
+
+    cache_get <- function(key) {
+        get(key, envir = cache, inherits = FALSE)
+    }
+
+    cache_has_key <- function(key) {
+        exists(key, envir = cache, inherits = FALSE)
+    }
+
+    cache_reset()
+
+    function(n) {
+ 
+        k <- as.character(n)
+ 
+        if (cache_has_key(k)) 
+            return(cache_get(k))
+ 
+        out <- fibM(n - 1) + fibM(n - 2)
+        cache_set(k, out)
+        return(out)
+    }
+})()
+
 # Test process
 TEST <- 600
 
@@ -121,6 +158,12 @@ print(microbenchmark({
 	fib6(TEST)
 }))
 
+cat("\n test 7\n")
+print(microbenchmark({
+	environment(fibM)$cache_reset()
+	fibM(TEST)
+}))
+
 cat("\n")
 print(fib1(1000))
 print(fib2(1000))
@@ -128,3 +171,4 @@ print(fib3(1000))
 print(fib4(1000))
 print(fib5(1000))
 print(fib6(1000))
+print(fibM(1000))
