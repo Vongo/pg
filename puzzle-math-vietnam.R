@@ -36,11 +36,6 @@ system.time({
 # All solutions
 system.time({
 	res <- as.data.frame(matrix(NA,0,9))
-	nbs <- 1:9
-	t <- NULL
-	mute <- sapply(seq(nrow(perm)), function(x) {
-		t <- perm[x,]
-		if (testVector(t)) res <<- rbind(res,t)
-	})
+	mute <- sapply(seq(nrow(perm)), function(x) if (testVector(perm[x,])) res <<- rbind(res,perm[x,]))
 	print(res)
 })
