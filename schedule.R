@@ -32,7 +32,7 @@ schedule$City <- sapply(schedule$Day, function(x) {
 		cities <- intersect(cities, people[[people.name[people.name$name==p,]$i]]$cities)
 	}
 	repeat {
-		ret <- sample(cities,1)
+		ret <- sample(cities,1, replace=F)
 		if (!(ret %in% aa)) {
 			aa <<- c(aa,ret)
 			break
